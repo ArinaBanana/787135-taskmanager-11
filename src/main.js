@@ -1,9 +1,9 @@
 import {createSiteMenuTemplate} from "./components/site-menu";
 import {createFilterTemplate} from "./components/filter";
 import {createBoardTemplate} from "./components/board";
-import {createFormTaskEditTemplate} from "./components/tasks-edit";
+import {createTasksEditTemplate} from "./components/tasks-edit";
 import {createTaskItemTemplate} from "./components/task-item";
-import {createButtonLoadMoreTemplate} from "./components/button-load";
+import {createButtonLoadTemplate} from "./components/button-load";
 
 const TASK_COUNT = 3;
 
@@ -21,11 +21,11 @@ render(siteMainElement, createBoardTemplate(), `beforeend`);
 const siteBoardElement = siteMainElement.querySelector(`.board`);
 const siteContainerBoardElement = document.querySelector(`.board__tasks`);
 
-render(siteContainerBoardElement, createFormTaskEditTemplate(), `beforeend`);
+render(siteContainerBoardElement, createTasksEditTemplate(), `beforeend`);
 
 for (let i = 0; i < TASK_COUNT; i++) {
   render(siteContainerBoardElement, createTaskItemTemplate(), `beforeend`);
 }
 
-render(siteBoardElement, createButtonLoadMoreTemplate(), `beforeend`);
+render(siteBoardElement, createButtonLoadTemplate(), `beforeend`);
 
