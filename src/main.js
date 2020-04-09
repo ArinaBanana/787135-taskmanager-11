@@ -27,7 +27,7 @@ render(siteMainElement, createBoardTemplate(), `beforeend`);
 const siteBoardElement = siteMainElement.querySelector(`.board`);
 const siteContainerBoardElement = document.querySelector(`.board__tasks`);
 
-render(siteContainerBoardElement, createTasksEditTemplate(), `beforeend`);
+render(siteContainerBoardElement, createTasksEditTemplate(tasks[0]), `beforeend`);
 
 for (let i = 0; i < tasks.length; i++) {
   render(siteContainerBoardElement, createTaskItemTemplate(tasks[i]), `beforeend`);
