@@ -1,5 +1,5 @@
 import {MONTHS, DAYS, COLORS} from "../utils/const";
-import {createTimeFormat} from "../utils/utils";
+import {createElement, createTimeFormat} from "../utils/utils";
 
 const createColors = (colors, currentColor) => {
   return colors.map((color, index) => {
@@ -124,4 +124,25 @@ const createTasksEditTemplate = (task) => {
   );
 };
 
-export {createTasksEditTemplate};
+export default class TasksEdit {
+  constructor(task) {
+    this._task = task;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTasksEditTemplate(this._task);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
