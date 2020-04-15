@@ -17,4 +17,9 @@ const MONTHS = [
   `December`,
 ];
 
-export {MONTHS, DAYS, COLORS};
+const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`,
+};
+
+export {MONTHS, DAYS, COLORS, RenderPosition};
