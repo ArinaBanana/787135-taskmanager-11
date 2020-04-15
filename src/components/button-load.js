@@ -12,7 +12,7 @@ export default class ButtonLoad {
   }
 
   getTemplate() {
-    return createButtonLoadTemplate()
+    return createButtonLoadTemplate();
   }
 
   getElement() {
