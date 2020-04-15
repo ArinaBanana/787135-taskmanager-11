@@ -1,5 +1,5 @@
 import {MONTHS} from "../utils/const";
-import {createTimeFormat} from "../utils/utils";
+import {createTimeFormat, createElement} from "../utils/utils";
 
 const createTaskItemTemplate = (task) => {
   const {
@@ -66,4 +66,25 @@ const createTaskItemTemplate = (task) => {
   );
 };
 
-export {createTaskItemTemplate};
+export default class Task {
+  constructor(task) {
+    this._task = task;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTaskItemTemplate(this._task);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
