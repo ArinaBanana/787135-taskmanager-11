@@ -33,11 +33,11 @@ const renderTask = (taskList, task) => {
   const editForm = taskEditComponent.getElement().querySelector(`form`);
   editForm.addEventListener(`submit`, onEditFormSubmit);
 
-  render(taskList, taskComponent.getElement(), `beforeend`);
+  render(taskList, taskComponent, `beforeend`);
 };
 
 const renderBoard = (boardComponent, tasks) => {
-  render(boardComponent.getElement(), new Sort().getElement(), `afterbegin`);
+  render(boardComponent.getElement(), new Sort(), `afterbegin`);
 
   const taskListElement = boardComponent.getElement().querySelector(`.board__tasks`);
 
@@ -48,7 +48,7 @@ const renderBoard = (boardComponent, tasks) => {
     .forEach((task) => renderTask(taskListElement, task));
 
   const buttonLoadComponent = new ButtonLoad();
-  render(boardComponent.getElement(), buttonLoadComponent.getElement(), `beforeend`);
+  render(boardComponent.getElement(), buttonLoadComponent, `beforeend`);
 
   buttonLoadComponent.getElement().addEventListener(`click`, () => {
     const prevTasksCount = showingTasksCount;
@@ -71,9 +71,9 @@ const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 const filters = generateFilters();
 const tasks = generateTasks(TASK_COUNT);
 
-render(siteHeaderElement, new SiteMenu().getElement(), `beforeend`);
-render(siteMainElement, new Filters(filters).getElement(), `beforeend`);
+render(siteHeaderElement, new SiteMenu(), `beforeend`);
+render(siteMainElement, new Filters(filters), `beforeend`);
 
 const boardComponent = new Board();
-render(siteMainElement, boardComponent.getElement(), `beforeend`);
+render(siteMainElement, boardComponent, `beforeend`);
 renderBoard(boardComponent, tasks);
