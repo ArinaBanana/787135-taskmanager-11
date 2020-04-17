@@ -1,5 +1,7 @@
+import AbstractComponent from "./abstract-component";
+
 import {MONTHS} from "../utils/const";
-import {createTimeFormat, createElement} from "../utils/utils";
+import {createTimeFormat} from "../utils/utils";
 
 const createTaskItemTemplate = (task) => {
   const {
@@ -66,25 +68,13 @@ const createTaskItemTemplate = (task) => {
   );
 };
 
-export default class Task {
+export default class Task extends AbstractComponent {
   constructor(task) {
+    super();
     this._task = task;
-    this._element = null;
   }
 
   getTemplate() {
     return createTaskItemTemplate(this._task);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
