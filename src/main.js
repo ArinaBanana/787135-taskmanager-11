@@ -9,7 +9,7 @@ import ButtonLoad from "./components/button-load";
 import {generateFilters} from "./mocks/filters";
 import {generateTasks} from "./mocks/task";
 
-import {render} from "./utils/utils";
+import {render, replace, remove} from "./utils/methods-for-components";
 
 const TASK_COUNT = 22;
 const SHOWING_TASKS_COUNT_ON_START = 8;
@@ -17,12 +17,12 @@ const SHOWING_TASKS_COUNT_BY_BUTTON = 8;
 
 const renderTask = (taskList, task) => {
   const onEditButtonClick = () => {
-    taskList.replaceChild(taskEditComponent.getElement(), taskComponent.getElement());
+    replace(taskEditComponent, taskComponent);
   };
 
   const onEditFormSubmit = (evt) => {
     evt.preventDefault();
-    taskList.replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
+    replace(taskComponent, taskEditComponent);
   };
 
   const taskComponent = new Task(task);
@@ -59,8 +59,7 @@ const renderBoard = (boardComponent, tasks) => {
       .forEach((task) => renderTask(taskListElement, task));
 
     if (showingTasksCount >= tasks.length) {
-      buttonLoadComponent.getElement().remove();
-      buttonLoadComponent.removeElement();
+      remove(buttonLoadComponent);
     }
   });
 };
