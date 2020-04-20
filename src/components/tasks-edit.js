@@ -1,5 +1,7 @@
+import AbstractComponent from "./abstract-component";
+
 import {MONTHS, DAYS, COLORS} from "../utils/const";
-import {createElement, createTimeFormat} from "../utils/utils";
+import {createTimeFormat} from "../utils/utils";
 
 const createColors = (colors, currentColor) => {
   return colors.map((color, index) => {
@@ -124,25 +126,19 @@ const createTasksEditTemplate = (task) => {
   );
 };
 
-export default class TasksEdit {
+export default class TasksEdit extends AbstractComponent {
   constructor(task) {
+    super();
     this._task = task;
-    this._element = null;
   }
 
   getTemplate() {
     return createTasksEditTemplate(this._task);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setEditFormSubmitHandler(handler) {
+    this.getElement()
+      .querySelector(`.card__save`)
+      .addEventListener(`click`, handler);
   }
 }
