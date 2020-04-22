@@ -37,7 +37,7 @@ export default class TaskController {
     this._taskEditComponent.setEditFormSubmitHandler(() => {
       this._replaceEditToTask();
     });
-    
+
     if (oldTaskComponent && oldTaskEditComponent) {
       replace(this._taskComponent, oldTaskComponent);
       replace(this._taskEditComponent, oldTaskEditComponent);
