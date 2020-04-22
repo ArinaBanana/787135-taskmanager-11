@@ -12,6 +12,9 @@ export default class TaskController {
   }
 
   render(task) {
+    const oldTaskComponent = this._taskComponent;
+    const oldTaskEditComponent = this._taskEditComponent;
+
     this._taskComponent = new Task(task);
     this._taskEditComponent = new TasksEdit(task);
 
@@ -34,8 +37,13 @@ export default class TaskController {
     this._taskEditComponent.setEditFormSubmitHandler(() => {
       this._replaceEditToTask();
     });
-
-    render(this._container, this._taskComponent, `beforeend`);
+    
+    if (oldTaskComponent && oldTaskEditComponent) {
+      replace(this._taskComponent, oldTaskComponent);
+      replace(this._taskEditComponent, oldTaskEditComponent);
+    } else {
+      render(this._container, this._taskComponent, `beforeend`);
+    }
   }
 
   _replaceEditToTask() {
