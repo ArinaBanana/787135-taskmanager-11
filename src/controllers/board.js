@@ -8,9 +8,9 @@ import {remove, render} from "../utils/methods-for-components";
 const SHOWING_TASKS_COUNT_ON_START = 8;
 const SHOWING_TASKS_COUNT_BY_BUTTON = 8;
 
-const renderTasks = (taskListElement, tasks) => {
+const renderTasks = (taskListElement, tasks, onDataChange) => {
   return tasks.map((task) => {
-    const taskController = new TaskController(taskListElement);
+    const taskController = new TaskController(taskListElement, onDataChange);
     taskController.render(task);
 
     return taskController;
@@ -27,6 +27,8 @@ export default class BoardController {
 
     this._showingTasksCount = SHOWING_TASKS_COUNT_ON_START;
     this._tasks = [];
+
+    this._onDataChange = this._onDataChange.bind(this);
   }
 
   render(tasks) {
@@ -38,7 +40,7 @@ export default class BoardController {
 
     const taskListElement = this._board.getElement();
 
-    renderTasks(taskListElement, this._tasks.slice(0, this._showingTasksCount));
+    renderTasks(taskListElement, this._tasks.slice(0, this._showingTasksCount), this._onDataChange);
 
     this._renderLoadMoreButton();
   }
@@ -57,11 +59,23 @@ export default class BoardController {
 
       const taskListElement = this._board.getElement();
 
-      renderTasks(taskListElement, this._tasks.slice(prevTasksCount, this._showingTasksCount));
+      renderTasks(taskListElement, this._tasks.slice(prevTasksCount, this._showingTasksCount), this._onDataChange);
 
       if (this._showingTasksCount >= this._tasks.length) {
         remove(this._buttonLoad);
       }
     });
+  }
+
+  _onDataChange(taskController, oldData, newData) {
+    const index = this._tasks.findIndex((it) => it === oldData);
+
+    if (index === -1) {
+      return;
+    }
+
+    this._tasks = [].concat(this._tasks.slice(0, index), newData, this._tasks.slice(index + 1));
+
+    taskController.render(this._tasks[index]);
   }
 }
