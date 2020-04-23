@@ -1,6 +1,6 @@
 import AbstractSmartComponent from "./abstract-smart-component";
 
-import {MONTHS, DAYS, COLORS} from "../utils/const";
+import {DAYS, COLORS} from "../utils/const";
 import {createTimeFormat} from "../utils/utils";
 
 const isRepeating = (repeatingDays) => {
