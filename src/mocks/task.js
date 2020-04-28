@@ -42,10 +42,21 @@ const generateRepeatingDays = () => {
   });
 };
 
+function makeIdGenerator() {
+  let counter = 0;
+
+  return () => {
+    return counter++;
+  };
+}
+
+const getNextId = makeIdGenerator();
+
 const generateTask = () => {
   const dueDate = Math.random() > 0.5 ? null : getRandomDate();
 
   return {
+    id: getNextId(),
     description: getRandomArrayItem(DescriptionItems),
     dueDate,
     repeatingDays: dueDate ? DefaultRepeatingDays : generateRepeatingDays(),
