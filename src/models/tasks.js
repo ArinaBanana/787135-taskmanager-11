@@ -1,4 +1,4 @@
-export default class Tasks {
+export default class TasksModel {
   constructor() {
     this._tasks = [];
     this._dataChangeHandlers = [];
@@ -10,6 +10,7 @@ export default class Tasks {
 
   setTasks(tasks) {
     this._tasks = Array.from(tasks);
+    this._callHandlers(this._dataChangeHandlers);
   }
 
   updateTasks(id, task) {
