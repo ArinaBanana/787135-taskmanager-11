@@ -22,4 +22,13 @@ const RenderPosition = {
   BEFOREEND: `beforeend`,
 };
 
-export {MONTHS, DAYS, COLORS, RenderPosition};
+const FilterTypes = {
+  ALL: `all`,
+  ARCHIVE: `archive`,
+  FAVORITES: `favorites`,
+  OVERDUE: `overdue`,
+  REPEATING: `repeating`,
+  TODAY: `today`,
+};
+
+export {MONTHS, DAYS, COLORS, RenderPosition, FilterTypes};
