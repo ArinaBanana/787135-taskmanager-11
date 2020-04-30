@@ -8,4 +8,16 @@ const createDateFormat = (date) => {
   return moment(date).format(`DD MMMM`);
 };
 
-export {createTimeFormat, createDateFormat};
+const isRepeating = (repeatingDays) => {
+  return Object.values(repeatingDays).some(Boolean);
+};
+
+const isOneDay = (dateA, dateB) => {
+
+};
+
+const isOverdueDate = (dueDate, date) => {
+  return dueDate < date && !isOneDay(date, dueDate);
+};
+
+export {createTimeFormat, createDateFormat, isRepeating, isOneDay, isOverdueDate};

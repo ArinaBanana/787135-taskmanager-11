@@ -32,7 +32,7 @@ export default class FilterController {
     const oldComponent = this._filterComponent;
 
     this._filterComponent = new Filters(filters);
-    this._filterComponent.setFilterChangeHandler(this._onFilterChange);
+    this._filterComponent.setFilterChangeHandler(this._onFilterChange); // wip
 
     if (oldComponent) {
       replace(this._filterComponent, oldComponent);
@@ -42,7 +42,6 @@ export default class FilterController {
   }
 
   _onFilterChange(filterType) {
-    this._tasksModel.setFilter(filterType);
     this._activeFilterType = filterType;
   }
 
