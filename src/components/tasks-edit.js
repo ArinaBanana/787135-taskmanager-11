@@ -1,7 +1,6 @@
 import AbstractSmartComponent from "./abstract-smart-component";
-
 import {DAYS, COLORS} from "../utils/const";
-import {createTimeFormat} from "../utils/utils";
+import {createTimeFormat, createDateFormat} from "../utils/utils";
 
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
@@ -59,7 +58,7 @@ const createTasksEditTemplate = (task, options = {}) => {
   const isExpired = dueDate instanceof Date && dueDate < Date.now();
   const isBlockSaveButton = (isDateShowing && isRepeatingTask) || (isRepeatingTask && !isRepeating(activeRepeatingDays));
 
-  const date = (isDateShowing && dueDate) ? createTimeFormat(dueDate) : ``;
+  const date = (isDateShowing && dueDate) ? createDateFormat(dueDate) : ``;
   const time = (isDateShowing && dueDate) ? createTimeFormat(dueDate) : ``;
 
   const repeatClass = isRepeatingTask ? `card--repeat` : ``;
