@@ -1,7 +1,5 @@
 import AbstractComponent from "./abstract-component";
-
-import {MONTHS} from "../utils/const";
-import {createTimeFormat} from "../utils/utils";
+import {createTimeFormat, createDateFormat} from "../utils/utils";
 
 const createButtonMarkup = (name, isActive = true) => {
   return (
@@ -22,7 +20,7 @@ const createTaskItemTemplate = (task) => {
   const isDateShowing = !!dueDate;
   const isExpired = dueDate instanceof Date && dueDate < Date.now();
 
-  const date = isDateShowing ? `${dueDate.getDate()} ${MONTHS[dueDate.getMonth()]}` : ``;
+  const date = isDateShowing ? createDateFormat(dueDate) : ``;
   const time = isDateShowing ? createTimeFormat(dueDate) : ``;
 
   const repeatClass = Object.values(repeatingDays).some(Boolean) ? `card--repeat` : ``;
