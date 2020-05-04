@@ -1,6 +1,8 @@
 import AbstractComponent from "./abstract-component";
 import {createTimeFormat, createDateFormat, isOverdueDate} from "../utils/utils";
 
+import {encode} from "he";
+
 const createButtonMarkup = (name, isActive = true) => {
   return (
     `<button type="button" class="card__btn card__btn--${name} ${isActive ? `` : `card__btn--disabled`}">
@@ -11,11 +13,13 @@ const createButtonMarkup = (name, isActive = true) => {
 
 const createTaskItemTemplate = (task) => {
   const {
-    description,
+    description: notSanitizedDescription,
     dueDate,
     repeatingDays,
     color,
   } = task;
+
+  const description = encode(notSanitizedDescription);
 
   const isDateShowing = !!dueDate;
   const isExpired = dueDate instanceof Date && isOverdueDate(dueDate, new Date());
