@@ -32,6 +32,10 @@ export default class TasksModel {
     this._dataChangeHandlers.push(handler);
   }
 
+  setFilterChangeHandler(handler) {
+    this._filterChangeHandlers.push(handler);
+  }
+
   updateTasks(id, task) {
     const index = this._tasks.findIndex((it) => it.id === id);
 

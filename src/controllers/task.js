@@ -1,6 +1,6 @@
 import Task from "../components/task-item";
 import TasksEdit from "../components/tasks-edit";
-import {render, replace} from "../utils/methods-for-components";
+import {render, replace, remove} from "../utils/methods-for-components";
 
 const Mode = {
   DEFAULT: `default`,
@@ -58,6 +58,12 @@ export default class TaskController {
     if (this._mode !== Mode.DEFAULT) {
       this._replaceEditToTask();
     }
+  }
+
+  destroy() {
+    remove(this._taskEditComponent);
+    remove(this._taskComponent);
+    // в дальнейшем здесь удалить обработчики событий
   }
 
   _replaceEditToTask() {
