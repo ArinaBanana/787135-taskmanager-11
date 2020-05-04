@@ -34,6 +34,8 @@ export default class BoardController {
 
     this._onFilterChange = this._onFilterChange.bind(this);
     this._tasksModel.setFilterChangeHandler(this._onFilterChange);
+
+    this._onLoadMoreButtonClick = this._onLoadMoreButtonClick.bind(this);
   }
 
   render() {
@@ -65,22 +67,7 @@ export default class BoardController {
   _renderLoadMoreButton() {
     const container = this._container.getElement();
     render(container, this._buttonLoad, `beforeend`);
-
-    this._buttonLoad.setClickHandler(() => {
-      const prevTasksCount = this._showingTasksCount;
-      const tasks = this._tasksModel.getTasks();
-      const taskListElement = this._board.getElement();
-
-      this._showingTasksCount = this._showingTasksCount + SHOWING_TASKS_COUNT_BY_BUTTON;
-
-      const newTasks = renderTasks(taskListElement, tasks.slice(prevTasksCount, this._showingTasksCount), this._onDataChange, this._onViewChange);
-
-      this._showedTaskControllers = this._showedTaskControllers.concat(newTasks);
-
-      if (this._showingTasksCount >= this._tasksModel.getTasks().length) {
-        remove(this._buttonLoad);
-      }
-    });
+    this._buttonLoad.setClickHandler(this._onLoadMoreButtonClick);
   }
 
   _updateTasks(count) {
@@ -103,5 +90,21 @@ export default class BoardController {
 
   _onFilterChange() {
     this._updateTasks(SHOWING_TASKS_COUNT_ON_START);
+  }
+
+  _onLoadMoreButtonClick() {
+    const prevTasksCount = this._showingTasksCount;
+    const tasks = this._tasksModel.getTasks();
+    const taskListElement = this._board.getElement();
+
+    this._showingTasksCount = this._showingTasksCount + SHOWING_TASKS_COUNT_BY_BUTTON;
+
+    const newTasks = renderTasks(taskListElement, tasks.slice(prevTasksCount, this._showingTasksCount), this._onDataChange, this._onViewChange);
+
+    this._showedTaskControllers = this._showedTaskControllers.concat(newTasks);
+
+    if (this._showingTasksCount >= this._tasksModel.getTasks().length) {
+      remove(this._buttonLoad);
+    }
   }
 }
