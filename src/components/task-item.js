@@ -1,5 +1,5 @@
 import AbstractComponent from "./abstract-component";
-import {createTimeFormat, createDateFormat} from "../utils/utils";
+import {createTimeFormat, createDateFormat, isOverdueDate} from "../utils/utils";
 
 const createButtonMarkup = (name, isActive = true) => {
   return (
@@ -18,7 +18,7 @@ const createTaskItemTemplate = (task) => {
   } = task;
 
   const isDateShowing = !!dueDate;
-  const isExpired = dueDate instanceof Date && dueDate < Date.now();
+  const isExpired = dueDate instanceof Date && isOverdueDate(dueDate, new Date());
 
   const date = isDateShowing ? createDateFormat(dueDate) : ``;
   const time = isDateShowing ? createTimeFormat(dueDate) : ``;

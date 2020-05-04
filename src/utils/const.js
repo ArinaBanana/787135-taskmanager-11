@@ -1,21 +1,14 @@
-const COLORS = [`black`, `yellow`, `blue`, `green`, `pink`];
+const COLOR = {
+  BLACK: `black`,
+  YELLOW: `yellow`,
+  BLUE: `blue`,
+  GREEN: `green`,
+  PINK: `pink`,
+};
+
+const COLORS = Object.values(COLOR);
 
 const DAYS = [`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`];
-
-const MONTHS = [
-  `January`,
-  `February`,
-  `March`,
-  `April`,
-  `May`,
-  `June`,
-  `July`,
-  `August`,
-  `September`,
-  `October`,
-  `November`,
-  `December`,
-];
 
 const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
@@ -31,4 +24,4 @@ const FilterTypes = {
   TODAY: `today`,
 };
 
-export {MONTHS, DAYS, COLORS, RenderPosition, FilterTypes};
+export {DAYS, RenderPosition, FilterTypes, COLORS};
