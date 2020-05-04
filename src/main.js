@@ -1,4 +1,4 @@
-import SiteMenu from "./components/site-menu";
+import SiteMenu, {MenuItem} from "./components/site-menu";
 import Board from "./components/board";
 import BoardController from "./controllers/board";
 import FilterController from "./controllers/filter";
@@ -17,7 +17,8 @@ const tasks = generateTasks(TASK_COUNT);
 const tasksModel = new TasksModel();
 tasksModel.setTasks(tasks);
 
-render(siteHeaderElement, new SiteMenu(), `beforeend`);
+const siteMenuComponent = new SiteMenu();
+render(siteHeaderElement, siteMenuComponent, `beforeend`);
 
 const filterController = new FilterController(siteMainElement, tasksModel);
 filterController.render();
@@ -27,3 +28,12 @@ render(siteMainElement, board, `beforeend`);
 
 const boardController = new BoardController(board, tasksModel);
 boardController.render();
+
+siteMenuComponent.setOnChange((menuItem) => {
+  switch (menuItem) {
+    case MenuItem.NEW_TASK:
+      siteMenuComponent.setActiveItem(MenuItem.TASKS);
+      boardController.createTask();
+      break;
+  }
+});

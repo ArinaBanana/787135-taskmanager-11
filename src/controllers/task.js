@@ -1,13 +1,30 @@
 import Task from "../components/task-item";
 import TasksEdit from "../components/tasks-edit";
 import {render, replace, remove} from "../utils/methods-for-components";
+import {COLORS, RenderPosition} from "../utils/const";
 
 const Mode = {
+  ADDING: `adding`,
   DEFAULT: `default`,
   EDIT: `edit`,
 };
 
-const EmptyTask = {};
+const EmptyTask = {
+  description: ``,
+  dueDate: null,
+  repeatingDays: {
+    "mo": false,
+    "tu": false,
+    "we": false,
+    "th": false,
+    "fr": false,
+    "sa": false,
+    "su": false,
+  },
+  color: COLORS.BLACK,
+  isFavorite: false,
+  isArchive: false,
+};
 
 export default class TaskController {
   constructor(container, onDataChange, onViewChange) {
@@ -53,12 +70,26 @@ export default class TaskController {
 
     this._taskEditComponent.setDeleteButtonClickHandler(() => this._onDataChange(this, task, null));
 
-    if (oldTaskComponent && oldTaskEditComponent) {
-      replace(this._taskComponent, oldTaskComponent);
-      replace(this._taskEditComponent, oldTaskEditComponent);
-      this._replaceEditToTask();
-    } else {
-      render(this._container, this._taskComponent, `beforeend`);
+    switch (mode) {
+      case Mode.DEFAULT:
+        if (oldTaskEditComponent && oldTaskComponent) {
+          replace(this._taskComponent, oldTaskComponent);
+          replace(this._taskEditComponent, oldTaskEditComponent);
+          this._replaceEditToTask();
+        } else {
+          render(this._container, this._taskComponent, RenderPosition.BEFOREEND);
+        }
+        break;
+      case Mode.ADDING:
+        if (oldTaskEditComponent && oldTaskComponent) {
+          remove(oldTaskComponent);
+          remove(oldTaskEditComponent);
+        }
+
+        // обработчик клика на esc
+
+        render(this._container, this._taskEditComponent, RenderPosition.AFTERBEGIN);
+        break;
     }
   }
 
