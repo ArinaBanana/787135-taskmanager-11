@@ -18,7 +18,6 @@ const tasksModel = new TasksModel();
 tasksModel.setTasks(tasks);
 
 render(siteHeaderElement, new SiteMenu(), `beforeend`);
-// render(siteMainElement, new Filters(filters), `beforeend`);
 
 const filterController = new FilterController(siteMainElement, tasksModel);
 filterController.render();
