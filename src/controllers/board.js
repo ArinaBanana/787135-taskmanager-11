@@ -1,7 +1,7 @@
 import Sort from "../components/sort";
 import ButtonLoad from "../components/button-load";
 import BoardTasks from "../components/board-tasks";
-import TaskController from "./task";
+import TaskController, {Mode as TaskControllerMode, EmptyTask} from "./task";
 
 import {remove, render} from "../utils/methods-for-components";
 
@@ -11,7 +11,7 @@ const SHOWING_TASKS_COUNT_BY_BUTTON = 8;
 const renderTasks = (taskListElement, tasks, onDataChange, onViewChange) => {
   return tasks.map((task) => {
     const taskController = new TaskController(taskListElement, onDataChange, onViewChange);
-    taskController.render(task);
+    taskController.render(task, TaskControllerMode.DEFAULT);
 
     return taskController;
   });
@@ -77,10 +77,34 @@ export default class BoardController {
   }
 
   _onDataChange(taskController, oldData, newData) {
-    const inSuccess = this._tasksModel.updateTasks(oldData.id, newData);
+    if (oldData === EmptyTask) {
+      this._creatingTask = null;
+      if (newData === null) {
+        taskController.destroy();
+        this._updateTasks(this._showingTasksCount);
+      } else {
+        this._tasksModel.addTask(newData);
+        taskController.render(newData, TaskControllerMode.DEFAULT);
 
-    if (inSuccess) {
-      taskController.render(newData);
+        if (this._showingTasksCount % SHOWING_TASKS_COUNT_BY_BUTTON === 0) {
+          const destroyedTask = this._showedTaskControllers.pop();
+          destroyedTask.destroy();
+        }
+
+        this._showedTaskControllers = [].concat(taskController, this._showedTaskControllers);
+        this._showingTasksCount = this._showedTaskControllers.length;
+
+        this._renderLoadMoreButton();
+      }
+    } else if (newData === null) {
+      this._tasksModel.removeTask(oldData.id);
+      this._updateTasks(this._showingTasksCount);
+    } else {
+      const isSuccess = this._tasksModel.updateTasks(oldData.id, newData);
+
+      if (isSuccess) {
+        taskController.render(newData, TaskControllerMode.DEFAULT);
+      }
     }
   }
 

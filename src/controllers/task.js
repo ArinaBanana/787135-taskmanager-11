@@ -7,6 +7,8 @@ const Mode = {
   EDIT: `edit`,
 };
 
+const EmptyTask = {};
+
 export default class TaskController {
   constructor(container, onDataChange, onViewChange) {
     this._container = container;
@@ -19,7 +21,9 @@ export default class TaskController {
     this._taskEditComponent = null;
   }
 
-  render(task) {
+  render(task, mode) {
+    this._mode = mode;
+
     const oldTaskComponent = this._taskComponent;
     const oldTaskEditComponent = this._taskEditComponent;
 
@@ -43,12 +47,16 @@ export default class TaskController {
     });
 
     this._taskEditComponent.setEditFormSubmitHandler(() => {
-      this._replaceEditToTask();
+      const data = this._taskEditComponent.getData();
+      this._onDataChange(this, task, data);
     });
+
+    this._taskEditComponent.setDeleteButtonClickHandler(() => this._onDataChange(this, task, null));
 
     if (oldTaskComponent && oldTaskEditComponent) {
       replace(this._taskComponent, oldTaskComponent);
       replace(this._taskEditComponent, oldTaskEditComponent);
+      this._replaceEditToTask();
     } else {
       render(this._container, this._taskComponent, `beforeend`);
     }
@@ -68,7 +76,11 @@ export default class TaskController {
 
   _replaceEditToTask() {
     this._taskEditComponent.reset();
-    replace(this._taskComponent, this._taskEditComponent);
+
+    if (document.contains(this._taskEditComponent.getElement())) {
+      replace(this._taskComponent, this._taskEditComponent);
+    }
+
     this._mode = Mode.DEFAULT;
   }
 
@@ -78,3 +90,5 @@ export default class TaskController {
     this._mode = Mode.EDIT;
   }
 }
+
+export {Mode, EmptyTask};
