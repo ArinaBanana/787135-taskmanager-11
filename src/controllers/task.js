@@ -1,10 +1,29 @@
 import Task from "../components/task-item";
 import TasksEdit from "../components/tasks-edit";
-import {render, replace} from "../utils/methods-for-components";
+import {render, replace, remove} from "../utils/methods-for-components";
+import {COLORS, RenderPosition} from "../utils/const";
 
 const Mode = {
+  ADDING: `adding`,
   DEFAULT: `default`,
   EDIT: `edit`,
+};
+
+const EmptyTask = {
+  description: ``,
+  dueDate: null,
+  repeatingDays: {
+    "mo": false,
+    "tu": false,
+    "we": false,
+    "th": false,
+    "fr": false,
+    "sa": false,
+    "su": false,
+  },
+  color: COLORS.BLACK,
+  isFavorite: false,
+  isArchive: false,
 };
 
 export default class TaskController {
@@ -19,7 +38,9 @@ export default class TaskController {
     this._taskEditComponent = null;
   }
 
-  render(task) {
+  render(task, mode) {
+    this._mode = mode;
+
     const oldTaskComponent = this._taskComponent;
     const oldTaskEditComponent = this._taskEditComponent;
 
@@ -43,14 +64,32 @@ export default class TaskController {
     });
 
     this._taskEditComponent.setEditFormSubmitHandler(() => {
-      this._replaceEditToTask();
+      const data = this._taskEditComponent.getData();
+      this._onDataChange(this, task, data);
     });
 
-    if (oldTaskComponent && oldTaskEditComponent) {
-      replace(this._taskComponent, oldTaskComponent);
-      replace(this._taskEditComponent, oldTaskEditComponent);
-    } else {
-      render(this._container, this._taskComponent, `beforeend`);
+    this._taskEditComponent.setDeleteButtonClickHandler(() => this._onDataChange(this, task, null));
+
+    switch (mode) {
+      case Mode.DEFAULT:
+        if (oldTaskEditComponent && oldTaskComponent) {
+          replace(this._taskComponent, oldTaskComponent);
+          replace(this._taskEditComponent, oldTaskEditComponent);
+          this._replaceEditToTask();
+        } else {
+          render(this._container, this._taskComponent, RenderPosition.BEFOREEND);
+        }
+        break;
+      case Mode.ADDING:
+        if (oldTaskEditComponent && oldTaskComponent) {
+          remove(oldTaskComponent);
+          remove(oldTaskEditComponent);
+        }
+
+        // обработчик клика на esc
+
+        render(this._container, this._taskEditComponent, RenderPosition.AFTERBEGIN);
+        break;
     }
   }
 
@@ -60,9 +99,19 @@ export default class TaskController {
     }
   }
 
+  destroy() {
+    remove(this._taskEditComponent);
+    remove(this._taskComponent);
+    // в дальнейшем здесь удалить обработчики событий
+  }
+
   _replaceEditToTask() {
     this._taskEditComponent.reset();
-    replace(this._taskComponent, this._taskEditComponent);
+
+    if (document.contains(this._taskEditComponent.getElement())) {
+      replace(this._taskComponent, this._taskEditComponent);
+    }
+
     this._mode = Mode.DEFAULT;
   }
 
@@ -72,3 +121,5 @@ export default class TaskController {
     this._mode = Mode.EDIT;
   }
 }
+
+export {Mode, EmptyTask};
