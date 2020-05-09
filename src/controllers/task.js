@@ -36,6 +36,8 @@ export default class TaskController {
 
     this._taskComponent = null;
     this._taskEditComponent = null;
+
+    this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
 
   render(task, mode) {
@@ -49,6 +51,7 @@ export default class TaskController {
 
     this._taskComponent.setEditClickButtonHandler(() => {
       this._replaceTaskToEdit();
+      document.addEventListener(`keydown`, this._onEscKeyDown);
     });
 
     this._taskComponent.setArchiveButtonClickHandler(() => {
@@ -86,7 +89,7 @@ export default class TaskController {
           remove(oldTaskEditComponent);
         }
 
-        // обработчик клика на esc
+        document.addEventListener(`keydown`, this._onEscKeyDown);
 
         render(this._container, this._taskEditComponent, RenderPosition.AFTERBEGIN);
         break;
@@ -102,10 +105,11 @@ export default class TaskController {
   destroy() {
     remove(this._taskEditComponent);
     remove(this._taskComponent);
-    // в дальнейшем здесь удалить обработчики событий
+    document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
   _replaceEditToTask() {
+    document.removeEventListener(`keydown`, this._onEscKeyDown);
     this._taskEditComponent.reset();
 
     if (document.contains(this._taskEditComponent.getElement())) {
@@ -119,6 +123,19 @@ export default class TaskController {
     this._onViewChange();
     replace(this._taskEditComponent, this._taskComponent);
     this._mode = Mode.EDIT;
+  }
+
+  _onEscKeyDown(evt) {
+    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+    if (isEscKey) {
+      if (this._mode === Mode.ADDING) {
+        this._onDataChange(this, EmptyTask, null);
+      }
+
+      this._replaceEditToTask();
+      document.removeEventListener(`keydown`, this._onEscKeyDown);
+    }
   }
 }
 
