@@ -1,6 +1,7 @@
 import Sort from "../components/sort";
 import ButtonLoad from "../components/button-load";
 import BoardTasks from "../components/board-tasks";
+import NoTasks from "../components/no-tasks";
 import TaskController, {Mode as TaskControllerMode, EmptyTask} from "./task";
 
 import {remove, render} from "../utils/methods-for-components";
@@ -25,6 +26,7 @@ export default class BoardController {
     this._sort = new Sort();
     this._buttonLoad = new ButtonLoad();
     this._board = new BoardTasks();
+    this._noTasks = new NoTasks();
     this._creatingTask = null;
 
     this._showingTasksCount = SHOWING_TASKS_COUNT_ON_START;
@@ -42,6 +44,13 @@ export default class BoardController {
   render() {
     const container = this._container.getElement();
     const tasks = this._tasksModel.getTasks();
+
+    const isAllTasksArchived = tasks.every((task) => task.isArchive);
+
+    if (isAllTasksArchived) {
+      render(container, this._noTasks, `beforeend`);
+      return;
+    }
 
     render(container, this._sort, `afterbegin`);
     render(container, this._board, `beforeend`);
