@@ -54,11 +54,11 @@ export default class BoardController {
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
-    this._tasksModel.setFilterChangeHandler(this._onFilterChange);
     this._onLoadMoreButtonClick = this._onLoadMoreButtonClick.bind(this);
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
 
     this._sort.setSortTypeChangeHandler(this._onSortTypeChange);
+    this._tasksModel.setFilterChangeHandler(this._onFilterChange);
   }
 
   render() {
