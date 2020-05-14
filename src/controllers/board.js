@@ -1,4 +1,4 @@
-import Sort from "../components/sort";
+import Sort, {SortType} from "../components/sort";
 import ButtonLoad from "../components/button-load";
 import BoardTasks from "../components/board-tasks";
 import NoTasks from "../components/no-tasks";
@@ -18,6 +18,25 @@ const renderTasks = (taskListElement, tasks, onDataChange, onViewChange) => {
   });
 };
 
+const getSortedTasks = (tasks, sortType, from, to) => {
+  let sortedTasks = [];
+  const showingTasks = tasks.slice();
+
+  switch (sortType) {
+    case SortType.DATE_UP:
+      sortedTasks = showingTasks.sort((a, b) => a.dueDate - b.dueDate);
+      break;
+    case SortType.DATE_DOWN:
+      sortedTasks = showingTasks.sort((a, b) => b.dueDate - a.dueDate);
+      break;
+    case SortType.DEFAULT:
+      sortedTasks = showingTasks;
+      break;
+  }
+
+  return sortedTasks.slice(from, to);
+};
+
 export default class BoardController {
   constructor(container, tasksModel) {
     this._container = container;
@@ -34,11 +53,12 @@ export default class BoardController {
 
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
-
     this._onFilterChange = this._onFilterChange.bind(this);
-    this._tasksModel.setFilterChangeHandler(this._onFilterChange);
-
     this._onLoadMoreButtonClick = this._onLoadMoreButtonClick.bind(this);
+    this._onSortTypeChange = this._onSortTypeChange.bind(this);
+
+    this._sort.setSortTypeChangeHandler(this._onSortTypeChange);
+    this._tasksModel.setFilterChangeHandler(this._onFilterChange);
   }
 
   render() {
@@ -136,18 +156,27 @@ export default class BoardController {
     this._updateTasks(SHOWING_TASKS_COUNT_ON_START);
   }
 
+  _onSortTypeChange(sortType) {
+    this._showingTasksCount = SHOWING_TASKS_COUNT_ON_START;
+
+    const sortedTasks = getSortedTasks(this._tasksModel.getTasks(), sortType, 0, this._showingTasksCount);
+
+    this._removeTasks();
+    this._renderTasks(sortedTasks);
+
+    this._renderLoadMoreButton();
+  }
+
   _onLoadMoreButtonClick() {
     const prevTasksCount = this._showingTasksCount;
     const tasks = this._tasksModel.getTasks();
-    const taskListElement = this._board.getElement();
 
     this._showingTasksCount = this._showingTasksCount + SHOWING_TASKS_COUNT_BY_BUTTON;
 
-    const newTasks = renderTasks(taskListElement, tasks.slice(prevTasksCount, this._showingTasksCount), this._onDataChange, this._onViewChange);
+    const sortedTasks = getSortedTasks(tasks, this._sort.getSortType(), prevTasksCount, this._showingTasksCount);
+    this._renderTasks(sortedTasks);
 
-    this._showedTaskControllers = this._showedTaskControllers.concat(newTasks);
-
-    if (this._showingTasksCount >= this._tasksModel.getTasks().length) {
+    if (this._showingTasksCount >= sortedTasks.length) {
       remove(this._buttonLoad);
     }
   }
