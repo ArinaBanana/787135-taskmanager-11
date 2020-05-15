@@ -2,7 +2,6 @@ import Sort, {SortType} from "../components/sort";
 import ButtonLoad from "../components/button-load";
 import BoardTasks from "../components/board-tasks";
 import NoTasks from "../components/no-tasks";
-import Statistics from "../components/statistics";
 import TaskController, {Mode as TaskControllerMode, EmptyTask} from "./task";
 
 import {remove, render} from "../utils/methods-for-components";
@@ -49,8 +48,6 @@ export default class BoardController {
     this._noTasks = new NoTasks();
     this._creatingTask = null;
 
-    this._statistics = new Statistics();
-
     this._showingTasksCount = SHOWING_TASKS_COUNT_ON_START;
     this._showedTaskControllers = [];
 
@@ -89,8 +86,6 @@ export default class BoardController {
     this._renderTasks(tasks.slice(0, this._showingTasksCount));
 
     this._renderLoadMoreButton();
-
-    render(container, this._statistics, `beforeend`);
   }
 
   createTask() {

@@ -1,5 +1,7 @@
 import SiteMenu, {MenuItem} from "./components/site-menu";
 import Board from "./components/board";
+import Statistics from "./components/statistics";
+
 import BoardController from "./controllers/board";
 import FilterController from "./controllers/filter";
 import TasksModel from "./models/tasks";
@@ -29,11 +31,25 @@ render(siteMainElement, board, `beforeend`);
 const boardController = new BoardController(board, tasksModel);
 boardController.render();
 
+const statisticComponent = new Statistics();
+render(siteMainElement, statisticComponent, `beforeend`);
+statisticComponent.hide();
+
 siteMenuComponent.setOnChange((menuItem) => {
   switch (menuItem) {
     case MenuItem.NEW_TASK:
       siteMenuComponent.setActiveItem(MenuItem.TASKS);
+      statisticComponent.hide();
+      boardController.show();
       boardController.createTask();
+      break;
+    case MenuItem.STATISTICS:
+      statisticComponent.show();
+      boardController.hide();
+      break;
+    case MenuItem.TASKS:
+      statisticComponent.hide();
+      boardController.show();
       break;
   }
 });
