@@ -31,7 +31,15 @@ render(siteMainElement, board, `beforeend`);
 const boardController = new BoardController(board, tasksModel);
 boardController.render();
 
-const statisticComponent = new Statistics();
+const dateTo = new Date();
+const dateFrom = (() => {
+  const d = new Date(dateTo);
+  d.setDate(d.getDate() - 7);
+  return d;
+})();
+
+const statisticComponent = new Statistics({tasks: tasksModel, dateFrom, dateTo});
+
 render(siteMainElement, statisticComponent, `beforeend`);
 statisticComponent.hide();
 

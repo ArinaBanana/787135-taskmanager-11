@@ -24,4 +24,12 @@ const FilterTypes = {
   TODAY: `today`,
 };
 
-export {DAYS, RenderPosition, FilterTypes, COLORS};
+const colorToHex = {
+  black: `#000000`,
+  blue: `#0c5cdd`,
+  green: `#31b55c`,
+  pink: `#ff3cb9`,
+  yellow: `#ffe125`,
+};
+
+export {DAYS, RenderPosition, FilterTypes, COLORS, colorToHex};
