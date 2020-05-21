@@ -59,7 +59,9 @@ siteMenuComponent.setOnChange((menuItem) => {
   }
 });
 
+boardController.render({isLoading: true});
+
 api.getTasks().then((tasks) => {
   tasksModel.setTasks(tasks);
-  boardController.render();
+  boardController.render({isLoading: false});
 });

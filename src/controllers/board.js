@@ -2,6 +2,7 @@ import Sort, {SortType} from "../components/sort";
 import ButtonLoad from "../components/button-load";
 import BoardTasks from "../components/board-tasks";
 import NoTasks from "../components/no-tasks";
+import Loading from "../components/loading";
 import TaskController, {Mode as TaskControllerMode, EmptyTask} from "./task";
 
 import {remove, render} from "../utils/methods-for-components";
@@ -46,6 +47,8 @@ export default class BoardController {
     this._buttonLoad = new ButtonLoad();
     this._board = new BoardTasks();
     this._noTasks = new NoTasks();
+    this._loading = new Loading();
+
     this._creatingTask = null;
 
     this._showingTasksCount = SHOWING_TASKS_COUNT_ON_START;
@@ -69,23 +72,30 @@ export default class BoardController {
     this._container.show();
   }
 
-  render() {
+  render({isLoading}) {
     const container = this._container.getElement();
-    const tasks = this._tasksModel.getTasks();
 
-    const isAllTasksArchived = tasks.every((task) => task.isArchive);
+    if (isLoading) {
+      render(container, this._loading, `beforeend`);
+    } else {
+      remove(this._loading);
 
-    if (isAllTasksArchived) {
-      render(container, this._noTasks, `beforeend`);
-      return;
+      const tasks = this._tasksModel.getTasks();
+      const isAllTasksArchived = tasks.length > 0 && tasks.every((task) => task.isArchive);
+      const isNoTasks = tasks.length === 0;
+
+      if (isAllTasksArchived || isNoTasks) {
+        render(container, this._noTasks, `beforeend`);
+        return;
+      }
+
+      render(container, this._sort, `afterbegin`);
+      render(container, this._board, `beforeend`);
+
+      this._renderTasks(tasks.slice(0, this._showingTasksCount));
+
+      this._renderLoadMoreButton();
     }
-
-    render(container, this._sort, `afterbegin`);
-    render(container, this._board, `beforeend`);
-
-    this._renderTasks(tasks.slice(0, this._showingTasksCount));
-
-    this._renderLoadMoreButton();
   }
 
   createTask() {
