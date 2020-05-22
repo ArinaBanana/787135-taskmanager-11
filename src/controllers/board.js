@@ -95,9 +95,7 @@ export default class BoardController {
 
       this._renderTasks(tasks.slice(0, this._showingTasksCount));
 
-      if (tasks.length > 8) {
-        this._renderLoadMoreButton();
-      }
+      this._renderLoadMoreButton();
     }
   }
 
@@ -126,6 +124,12 @@ export default class BoardController {
   }
 
   _renderLoadMoreButton() {
+    remove(this._buttonLoad);
+
+    if (this._showingTasksCount >= this._tasksModel.getTasks().length) {
+      return;
+    }
+
     const container = this._container.getElement();
     render(container, this._buttonLoad, `beforeend`);
     this._buttonLoad.setClickHandler(this._onLoadMoreButtonClick);
