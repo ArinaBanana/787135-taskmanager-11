@@ -26,7 +26,7 @@ filterController.render();
 const board = new Board();
 render(siteMainElement, board, `beforeend`);
 
-const boardController = new BoardController(board, tasksModel);
+const boardController = new BoardController(board, tasksModel, api);
 
 const dateTo = new Date();
 const dateFrom = (() => {
