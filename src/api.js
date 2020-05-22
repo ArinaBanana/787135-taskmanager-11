@@ -32,7 +32,7 @@ export default class API {
     return this._load({
       url: `tasks/${id}`,
       method: Method.PUT,
-      body: JSON.stringify(data.toRAW()),
+      body: JSON.stringify(data.toRaw()),
       headers: new Headers({"Content-Type": `application/json`}),
     }).then((response) => response.json())
       .then(TaskModel.parseTask);
