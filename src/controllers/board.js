@@ -95,8 +95,6 @@ export default class BoardController {
 
       this._renderTasks(tasks.slice(0, this._showingTasksCount));
 
-      console.log(tasks.length > 8)
-
       if (tasks.length > 8) {
         this._renderLoadMoreButton();
       }
