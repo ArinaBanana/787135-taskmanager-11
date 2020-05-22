@@ -9,13 +9,14 @@ import TasksModel from "./models/tasks";
 
 import {render} from "./utils/methods-for-components";
 
-const AUTHORIZATION = `Basic hfggerilfo3r94AAAmncfj`;
+const AUTHORIZATION = `Basic hfggerilfo3r94AAAmnc`;
+const END_POINT = `https://11.ecmascript.pages.academy/task-manager`;
 
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 
 const tasksModel = new TasksModel();
-const api = new API(AUTHORIZATION);
+const api = new API(END_POINT, AUTHORIZATION);
 
 const siteMenuComponent = new SiteMenu();
 render(siteHeaderElement, siteMenuComponent, `beforeend`);
