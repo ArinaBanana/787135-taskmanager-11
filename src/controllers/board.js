@@ -95,7 +95,11 @@ export default class BoardController {
 
       this._renderTasks(tasks.slice(0, this._showingTasksCount));
 
-      this._renderLoadMoreButton();
+      console.log(tasks.length > 8)
+
+      if (tasks.length > 8) {
+        this._renderLoadMoreButton();
+      }
     }
   }
 
