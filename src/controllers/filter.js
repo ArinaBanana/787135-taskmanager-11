@@ -1,7 +1,9 @@
 import Filters from "../components/filters";
-import {FilterTypes, RenderPosition} from "../utils/const";
+import {FilterTypes as FilterTypesEnum, RenderPosition} from "../utils/const";
 import {getTasksByFilter} from "../utils/filtration";
 import {replace, render} from "../utils/methods-for-components";
+
+const filterTypes = [FilterTypesEnum.ALL, FilterTypesEnum.OVERDUE, FilterTypesEnum.TODAY, FilterTypesEnum.FAVORITES, FilterTypesEnum.REPEATING, FilterTypesEnum.ARCHIVE];
 
 export default class FilterController {
   constructor(container, tasksModel) {
@@ -9,7 +11,7 @@ export default class FilterController {
     this._tasksModel = tasksModel;
 
     this._filterComponent = null;
-    this._activeFilterType = FilterTypes.ALL;
+    this._activeFilterType = FilterTypesEnum.ALL;
 
     this._onDataChange = this._onDataChange.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
@@ -21,7 +23,7 @@ export default class FilterController {
     const container = this._container;
     const allTasks = this._tasksModel.getTasksAll();
 
-    const filters = Object.values(FilterTypes).map((filterType) => {
+    const filters = filterTypes.map((filterType) => {
       return {
         name: filterType,
         count: getTasksByFilter(allTasks, filterType).length,

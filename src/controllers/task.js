@@ -1,7 +1,8 @@
 import Task from "../components/task-item";
 import TasksEdit from "../components/tasks-edit";
+import TaskModel from "../models/task";
 import {render, replace, remove} from "../utils/methods-for-components";
-import {COLORS, RenderPosition} from "../utils/const";
+import {COLORS, RenderPosition, DAYS} from "../utils/const";
 
 const Mode = {
   ADDING: `adding`,
@@ -25,6 +26,27 @@ const EmptyTask = {
   isFavorite: false,
   isArchive: false,
 };
+
+const parseFormData = (formData) => {
+  const date = formData.get(`date`);
+  const repeatingDays = DAYS.reduce((acc, day) => {
+    acc[day] = false;
+    return acc;
+  }, {});
+
+  return new TaskModel({
+    "description": formData.get(`text`),
+    "due_date": date ? new Date(date) : null,
+    "repeating_days": formData.getAll(`repeat`).reduce((acc, it) => {
+      acc[it] = true;
+      return acc;
+    }, repeatingDays),
+    "color": formData.get(`color`),
+    "is_favorite": false,
+    "is_done": false,
+  });
+};
+
 
 export default class TaskController {
   constructor(container, onDataChange, onViewChange) {
@@ -55,19 +77,23 @@ export default class TaskController {
     });
 
     this._taskComponent.setArchiveButtonClickHandler(() => {
-      this._onDataChange(this, task, Object.assign({}, task, {
-        isArchive: !task.isArchive,
-      }));
+      const newTask = TaskModel.clone(task);
+      newTask.isArchive = !newTask.isArchive;
+
+      this._onDataChange(this, task, newTask);
     });
 
     this._taskComponent.setFavoritesButtonClickHandler(() => {
-      this._onDataChange(this, task, Object.assign({}, task, {
-        isFavorite: !task.isFavorite,
-      }));
+      const newTask = TaskModel.clone(task);
+      newTask.isFavorite = !newTask.isFavorite;
+
+      this._onDataChange(this, task, newTask);
     });
 
     this._taskEditComponent.setEditFormSubmitHandler(() => {
-      const data = this._taskEditComponent.getData();
+      const formData = this._taskEditComponent.getData();
+      const data = parseFormData(formData);
+
       this._onDataChange(this, task, data);
     });
 
