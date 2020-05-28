@@ -32,4 +32,4 @@ const colorToHex = {
   yellow: `#ffe125`,
 };
 
-export {DAYS, RenderPosition, FilterTypes, COLORS, colorToHex};
+export {DAYS, RenderPosition, FilterTypes, COLORS, colorToHex, COLOR};

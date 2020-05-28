@@ -2,7 +2,7 @@ import Task from "../components/task-item";
 import TasksEdit from "../components/tasks-edit";
 import TaskModel from "../models/task";
 import {render, replace, remove} from "../utils/methods-for-components";
-import {COLORS, RenderPosition, DAYS} from "../utils/const";
+import {RenderPosition, DAYS, COLOR} from "../utils/const";
 
 const Mode = {
   ADDING: `adding`,
@@ -22,7 +22,7 @@ const EmptyTask = {
     "sa": false,
     "su": false,
   },
-  color: COLORS.BLACK,
+  color: COLOR.BLACK,
   isFavorite: false,
   isArchive: false,
 };
@@ -87,10 +87,13 @@ export default class TaskController {
       const newTask = TaskModel.clone(task);
       newTask.isFavorite = !newTask.isFavorite;
 
+
       this._onDataChange(this, task, newTask);
     });
 
-    this._taskEditComponent.setEditFormSubmitHandler(() => {
+    this._taskEditComponent.setEditFormSubmitHandler((evt) => {
+      evt.preventDefault();
+
       const formData = this._taskEditComponent.getData();
       const data = parseFormData(formData);
 
