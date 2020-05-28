@@ -91,6 +91,11 @@ const colorToHex = {
   yellow: `#ffe125`,
 };
 
+const DefaultData = {
+  deleteButtonText: `Delete`,
+  saveButtonText: `Save`,
+};
+
 export {
   AUTHORIZATION,
   END_POINT,
@@ -112,4 +117,5 @@ export {
   CodesResponse,
   Method,
   colorToHex,
+  DefaultData,
 };
