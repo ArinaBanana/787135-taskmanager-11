@@ -1,10 +1,5 @@
 import AbstractComponent from "./abstract-component";
-
-const MenuItem = {
-  NEW_TASK: `control__new-task`,
-  STATISTICS: `control__statistic`,
-  TASKS: `control__task`,
-};
+import {MenuItem} from "../utils/const";
 
 const createSiteMenuTemplate = () => {
   return (

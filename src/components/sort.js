@@ -1,10 +1,5 @@
 import AbstractComponent from "./abstract-component";
-
-const SortType = {
-  DATE_DOWN: `date-down`,
-  DATE_UP: `date-up`,
-  DEFAULT: `default`,
-};
+import {SortType} from "../utils/const";
 
 const createSortingTemplate = () => {
   return (

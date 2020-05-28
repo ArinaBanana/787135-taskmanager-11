@@ -1,14 +1,11 @@
 import AbstractSmartComponent from "./abstract-smart-component";
-import {DAYS, COLORS} from "../utils/const";
+import {DAYS, COLORS, MAX_DESCRIPTION_LENGTH, MIN_DESCRIPTION_LENGTH} from "../utils/const";
 import {createTimeFormat, createDateFormat, isRepeating, isOverdueDate} from "../utils/utils";
 
 import flatpickr from "flatpickr";
 import {encode} from "he";
 
 import "flatpickr/dist/flatpickr.min.css";
-
-const MIN_DESCRIPTION_LENGTH = 1;
-const MAX_DESCRIPTION_LENGTH = 140;
 
 const createColors = (colors, currentColor) => {
   return colors.map((color, index) => {

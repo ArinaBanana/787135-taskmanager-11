@@ -6,9 +6,7 @@ import Loading from "../components/loading";
 import TaskController, {Mode as TaskControllerMode, EmptyTask} from "./task";
 
 import {remove, render} from "../utils/methods-for-components";
-
-const SHOWING_TASKS_COUNT_ON_START = 8;
-const SHOWING_TASKS_COUNT_BY_BUTTON = 8;
+import {SHOWING_TASKS_COUNT_ON_START, SHOWING_TASKS_COUNT_BY_BUTTON} from "../utils/const";
 
 const renderTasks = (taskListElement, tasks, onDataChange, onViewChange) => {
   return tasks.map((task) => {

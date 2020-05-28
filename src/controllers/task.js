@@ -2,32 +2,7 @@ import Task from "../components/task-item";
 import TasksEdit from "../components/tasks-edit";
 import TaskModel from "../models/task";
 import {render, replace, remove} from "../utils/methods-for-components";
-import {RenderPosition, DAYS, COLOR} from "../utils/const";
-
-const SHAKE_ANIMATION_TIMEOUT = 600;
-
-const Mode = {
-  ADDING: `adding`,
-  DEFAULT: `default`,
-  EDIT: `edit`,
-};
-
-const EmptyTask = {
-  description: ``,
-  dueDate: null,
-  repeatingDays: {
-    "mo": false,
-    "tu": false,
-    "we": false,
-    "th": false,
-    "fr": false,
-    "sa": false,
-    "su": false,
-  },
-  color: COLOR.BLACK,
-  isFavorite: false,
-  isArchive: false,
-};
+import {DAYS, SHAKE_ANIMATION_TIMEOUT, Mode, EmptyTask, RenderPosition} from "../utils/const";
 
 const parseFormData = (formData) => {
   const date = formData.get(`date`);

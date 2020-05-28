@@ -2,15 +2,12 @@ import API from "./api";
 import SiteMenu, {MenuItem} from "./components/site-menu";
 import Board from "./components/board";
 import Statistics from "./components/statistics";
-
 import BoardController from "./controllers/board";
 import FilterController from "./controllers/filter";
 import TasksModel from "./models/tasks";
 
 import {render} from "./utils/methods-for-components";
-
-const AUTHORIZATION = `Basic hfggerilfo3r94AAAmnc`;
-const END_POINT = `https://11.ecmascript.pages.academy/task-manager`;
+import {AUTHORIZATION, END_POINT} from "./utils/const";
 
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
